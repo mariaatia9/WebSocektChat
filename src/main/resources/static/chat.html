@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body >
+        <script>
+            var userName = localStorage.getItem('username');
+            var ws = new WebSocket("ws://localhost:8080/chat?"+encodeURIComponent(userName));
+            ws.onmessage = function (evt) {
+                var received_msg = evt.data;
+                var messages = document.getElementById('messages');
+                messages.innerHTML += '<p>' + received_msg + '</p>';
+            };
+            var sendName = function() {
+                ws.send(document.getElementById("name").value);
+                return false;
+            }
+        </script>
+        <form onsubmit="return sendName();">
+            <input id="name" type="text" placeholder="Enter your name" />
+            <button type="submit">Submit</button>
+        </form>
+        <div id="messages" ></div>
+    </body>
+</html>
